@@ -3,16 +3,13 @@ const { Categoria } = require('../models');
 
 
 const obtenerCategorias = async(req, res = response ) => {
-
-    const { limite = 5, desde = 0 } = req.query;
+    
     const query = { estado: true };
 
     const [ total, categorias ] = await Promise.all([
         Categoria.countDocuments(query),
         Categoria.find(query)
             .populate('usuario', 'nombre')
-            .skip( Number( desde ) )
-            .limit(Number( limite ))
     ]);
 
     res.json({
@@ -23,12 +20,19 @@ const obtenerCategorias = async(req, res = response ) => {
 
 const obtenerCategoria = async(req, res = response ) => {
 
+   
+try {
     const { id } = req.params;
     const categoria = await Categoria.findById( id )
                             .populate('usuario', 'nombre');
 
     res.json( categoria );
-
+} catch (error) {
+    res.json({
+        of:false,
+        msg:'intentalo mas tarde'
+    });
+}
 }
 
 const crearCategoria = async(req, res = response ) => {
@@ -74,18 +78,29 @@ const actualizarCategoria = async( req, res = response ) => {
     //ACA ARREGLE ALGO
     const nomcat = req.body.nombre.toUpperCase(); 
     const VerifyName = await Categoria.findOne({ nombre:nomcat });
-    console.log(nomcat)
-    console.log(VerifyName)
     if ( VerifyName ) {
         return res.status(400).json({
-            msg: `Este nombre no puede ser usado`
+            ok: false,
+            msg: 'Este nombre no puede ser usado'
         });
     }
     else{
         console.log('Este nombre pudo ser usado')
-        const categoria = await Categoria.findByIdAndUpdate(id, data, { new: true });
         
-        res.json( categoria );
+        try {
+            const categoria = await Categoria.findByIdAndUpdate(id, data, { new: true });
+        
+            res.status(200).json( 
+                {ok:true,
+                msg: 'La Categoria fue modificada',
+                categoria} 
+                );
+        } catch (error) {
+            return res.status(400).json({
+                ok: false,
+                msg: 'Intentalo mas tarde'
+            });
+        }
     }
 }
 
@@ -93,9 +108,23 @@ const actualizarCategoria = async( req, res = response ) => {
 const borrarCategoria = async(req, res =response ) => {
 
     const { id } = req.params;
+    
+
+try {
     const categoriaBorrada = await Categoria.findByIdAndUpdate( id, { estado: false }, {new: true });
 
-    res.json( categoriaBorrada );
+    res.status(200).json( 
+        {ok:true,
+        msg: 'La categoria fue borrada',
+        categoriaBorrada} 
+        );
+} catch (error) {
+    res.status(400).json( 
+        {ok:false,
+        msg: 'Intentalo mas tarde',
+        } 
+        );
+}
 }
 
 

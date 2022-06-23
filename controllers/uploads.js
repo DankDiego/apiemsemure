@@ -128,7 +128,11 @@ const actualizarImagenCloudinary = async(req, res = response ) => {
     await modelo.save();
 
 
-    res.json( modelo );
+    res.status(200).json( 
+        {ok:true,
+        msg: 'Imagen Cambiada Correctamente',
+        modelo} 
+        );
 
 }
 

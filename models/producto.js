@@ -22,7 +22,6 @@ const ProductoSchema = Schema({
     },
     stock: {
         type: Number,
-        default: 1
     },
     categoria: {
         type: Schema.Types.ObjectId,

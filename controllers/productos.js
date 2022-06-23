@@ -75,18 +75,47 @@ const actualizarProducto = async( req, res = response ) => {
 
     data.usuario = req.usuario._id;
 
-    const producto = await Producto.findByIdAndUpdate(id, data, { new: true });
+    try {
+        const producto = await Producto.findByIdAndUpdate(id, data, { new: true });
 
-    res.json( producto );
+    res.status(200).json( 
+        {ok:true,
+        msg: 'El producto fue modificado',
+        producto} 
+        );
+    } catch (error) {
+        res.status(400).json( 
+            {ok:false,
+            msg: 'Intentalo mas tarde',
+            } 
+            );
+    }
+
+    
 
 }
 
 const borrarProducto = async(req, res = response ) => {
 
     const { id } = req.params;
-    const productoBorrado = await Producto.findByIdAndUpdate( id, { estado: false }, {new: true });
+   
 
-    res.json( productoBorrado );
+    try {
+        const productoBorrado = await Producto.findByIdAndUpdate( id, { estado: false }, {new: true });
+
+        res.status(200).json( 
+            {ok:true,
+            msg: 'El producto fue borrado',
+            productoBorrado} 
+            );
+        
+    } catch (error) {
+        res.status(400).json( 
+            {ok:false,
+            msg: 'Intentalo mas tarde',
+            } 
+            );
+    }
 }
 
 
