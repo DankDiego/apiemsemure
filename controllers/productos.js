@@ -22,12 +22,25 @@ const obtenerProductos = async(req, res = response ) => {
 
 const obtenerProducto = async(req, res = response ) => {
 
-    const { id } = req.params;
-    const producto = await Producto.findById( id )
+    
+
+    try {
+        const { id } = req.params;
+        const producto = await Producto.findById( id )
                             .populate('usuario', 'nombre')
                             .populate('categoria', 'nombre');
 
-    res.json( producto );
+         res.status(200).json( 
+            {ok:true,
+             msg: 'El producto fue modificado',
+            producto});
+    } catch (error) {
+        res.status(400).json( 
+            {ok:false,
+            msg: 'Intentalo mas tarde',
+            } 
+            );
+    }
 
 }
 
