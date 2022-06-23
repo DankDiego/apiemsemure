@@ -15,6 +15,12 @@ const UsuarioSchema = Schema({
         type: String,
         required: [true, 'La contraseña es obligatoria'],
     },
+    shopcart: [
+        {
+            type: Schema.Types.ObjectId,
+            ref: 'Producto',
+        }
+      ],
     img: {
         type: String,
     },

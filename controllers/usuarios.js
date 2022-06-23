@@ -71,6 +71,24 @@ const usuariosDelete = async(req, res = response) => {
     res.json(usuario);
 }
 
+const usuariosPutAddCart = async(req , res = response) => {
+
+    const { id } = req.params;
+    const {prodid} = req.body
+    console.log('id producto',prodid)
+    const addeditem = await Usuario.findByIdAndUpdate( 
+    id,
+    { $push: { shopcart: prodid } },
+    { new: true }
+    )
+    .populate('producto', 'nombre')
+    res.json({
+        ok: true,
+        msg: 'Producto agregado al carrito',
+        addeditem
+      })
+    
+}
 
 
 
@@ -80,4 +98,5 @@ module.exports = {
     usuariosPut,
     usuariosPatch,
     usuariosDelete,
+    usuariosPutAddCart
 }

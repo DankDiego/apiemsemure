@@ -16,7 +16,8 @@ const { usuariosGet,
         usuariosPut,
         usuariosPost,
         usuariosDelete,
-        usuariosPatch } = require('../controllers/usuarios');
+        usuariosPatch,
+        usuariosPutAddCart } = require('../controllers/usuarios');
 
 const router = Router();
 
@@ -50,6 +51,15 @@ router.delete('/:id',[
 ],usuariosDelete );
 
 router.patch('/', usuariosPatch );
+
+router.put('/addcart/:id',[
+    check('id', 'No es un ID válido').isMongoId(),
+    check('id').custom( existeUsuarioPorId ),
+    check('prodid', 'El Id de Producto es necesario').not().isEmpty(),
+    check('prodid', 'No es un ID válido de producto').isMongoId(),
+    validarCampos
+], usuariosPutAddCart );
+
 
 
 
