@@ -6,6 +6,10 @@ const UsuarioSchema = Schema({
         type: String,
         required: [true, 'El nombre es obligatorio']
     },
+    cartlist:[{
+        type: Schema.Types.ObjectId,
+        ref: 'Producto'
+      }],   
     correo: {
         type: String,
         required: [true, 'El correo es obligatorio'],
@@ -15,12 +19,6 @@ const UsuarioSchema = Schema({
         type: String,
         required: [true, 'La contraseña es obligatoria'],
     },
-    shopcart: [
-        {
-            type: Schema.Types.ObjectId,
-            ref: 'Producto',
-        }
-      ],
     img: {
         type: String,
     },
@@ -35,8 +33,7 @@ const UsuarioSchema = Schema({
         default: true
     },
     fecharegistro:{
-        type:Date,
-        default: Date.now
+        type:Date
     },
     google: {
         type: Boolean,

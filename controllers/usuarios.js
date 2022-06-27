@@ -12,20 +12,23 @@ const usuariosGet = async(req = request, res = response) => {
 
     const [ total, usuarios ] = await Promise.all([
         Usuario.countDocuments(query),
-        Usuario.find(query)
+        Usuario.find(query).populate('cartlist',['nombre','estado'])
     ]);
 
     res.json({
+        ok:true,
         total,
         usuarios
     });
+ 
 }
 
 const usuariosPost = async(req, res = response) => {
     
     const { nombre, correo, password, rol } = req.body;
+    const fecharegistro = new Date();
     
-    const usuario = new Usuario({ nombre, correo, password, rol });
+    const usuario = new Usuario({ nombre, correo, password, rol, fecharegistro });
 
     // Encriptar la contraseña
     const salt = bcryptjs.genSaltSync();
@@ -78,15 +81,14 @@ const usuariosPutAddCart = async(req , res = response) => {
     console.log('id producto',prodid)
     const addeditem = await Usuario.findByIdAndUpdate( 
     id,
-    { $push: { shopcart: prodid } },
+    { $addToSet:  {cartlist:prodid} },
     { new: true }
     )
-    .populate('producto', 'nombre')
     res.json({
         ok: true,
         msg: 'Producto agregado al carrito',
         addeditem
-      })
+      })    
     
 }
 

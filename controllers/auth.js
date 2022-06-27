@@ -14,7 +14,7 @@ const login = async(req, res = response) => {
     try {
       
         // Verificar si el email existe
-        const usuario = await Usuario.findOne({ correo });
+        const usuario = await Usuario.findOne({ correo }).populate('cartlist',['nombre','disponible','precio','descripcion','disponible','img','stock']);
         if ( !usuario ) {
             return res.status(400).json({
                 msg: 'Usuario / Password no son correctos - correo'
@@ -107,7 +107,6 @@ const googleSignin = async(req, res = response) => {
 
 const revalidarToken = async (req, res = response) => {
     const { uid, usuario } = req
-    console.log(uid,'espacio ---------------', usuario)
     // Generar JWT
     const token = await generarJWT(uid)
     console.log('token revalidado correctamente')

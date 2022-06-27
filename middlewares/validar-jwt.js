@@ -21,7 +21,7 @@ const validarJWT = async( req = request, res = response, next ) => {
 
         // leer el usuario que corresponde al uid
         console.log('POSIBLE ERORR -*-*-*-*-*-*-*-*-',uid,'aca id error')
-        const usuario = await Usuario.findById( uid );
+        const usuario = await Usuario.findById( uid ).populate('cartlist',['nombre','disponible','precio','descripcion','img','stock']);
         if( !usuario ) {
             return res.status(401).json({
                 msg: 'Token no válido - usuario no existe DB'

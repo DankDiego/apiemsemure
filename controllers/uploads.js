@@ -114,10 +114,15 @@ const actualizarImagenCloudinary = async(req, res = response ) => {
 
     // Limpiar imágenes previas
     if ( modelo.img ) {
+        if (modelo.img=== 'https://res.cloudinary.com/dsulcam/image/upload/v1656366442/sinimagen_afwbna.png') {
+            console.log('Imagen por defecto cambiada')
+        } else {
         const nombreArr = modelo.img.split('/');
         const nombre    = nombreArr[ nombreArr.length - 1 ];
         const [ public_id ] = nombre.split('.');
         cloudinary.uploader.destroy( public_id );
+        }
+        
     }
 
 
@@ -171,6 +176,7 @@ const mostrarImagen = async(req, res = response ) => {
     // Limpiar imágenes previas
     if ( modelo.img ) {
         // Hay que borrar la imagen del servidor
+        console.log(modelo.img)
         const pathImagen = path.join( __dirname, '../uploads', coleccion, modelo.img );
         if ( fs.existsSync( pathImagen ) ) {
             return res.sendFile( pathImagen )

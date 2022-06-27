@@ -28,11 +28,10 @@ const obtenerProducto = async(req, res = response ) => {
         const { id } = req.params;
         const producto = await Producto.findById( id )
                             .populate('usuario', 'nombre')
-                            .populate('categoria', 'nombre');
-
+                            .populate('categoria', 'nombre')
          res.status(200).json( 
             {ok:true,
-             msg: 'El producto fue modificado',
+             msg: 'Producto Obtenido',
             producto});
     } catch (error) {
         res.status(400).json( 
@@ -61,7 +60,8 @@ const crearProducto = async(req, res = response ) => {
     const data = {
         ...body,
         nombre: body.nombre.toUpperCase(),
-        usuario: req.usuario._id
+        usuario: req.usuario._id,
+        disponible: true
     }
 
     const producto = new Producto( data );

@@ -29,10 +29,10 @@ const ProductoSchema = Schema({
         required: true
     },
     descripcion: { type: String },
-    disponible: { type: Boolean, defult: true },
+    disponible: { type: Boolean},
     img: {
          type: String,
-         default:'https://res.cloudinary.com/dsulcam/image/upload/v1655259413/sinimagen_g6gdsy.png'
+         default:'https://res.cloudinary.com/dsulcam/image/upload/v1656366442/sinimagen_afwbna.png'
          },
 });
 
