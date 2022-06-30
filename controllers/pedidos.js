@@ -19,7 +19,7 @@ const crearPedido = async(req, res = response ) => {
     // Generar la data a guardar
     const data = {
         monto,
-        tracking,
+        tracking: 'En prceso de Envio',
         productos,
         estado,
         usuario,
@@ -49,15 +49,30 @@ const crearPedido = async(req, res = response ) => {
    
 }
 
-const getPedido = async(req, res = response ) => {
+const getPedidosUser = async(req, res = response ) => {
+    const { id } = req.params;
+    const query = { usuario: id }
+    try {
+        const [ total, pedidos ] = await Promise.all([
+            Pedido.countDocuments(query),
+            Pedido.find(query)
+        ]);
+    
+       
+    
+        res.status(201).json({
+            ok:true,
+            msg: 'Pedidos obtenidos',
+            pedidos
+        });
+    } catch (error) {
+        res.status(201).json({
+            ok:false,
+            msg: 'Intentalo mas tarde'
+        });
+    }
 
-    // Generar la data a guardar
-    console.log('pedido')
-
-    res.status(201).json({
-        ok:true,
-        msg: 'Pedido ruta'
-    });
+    
 
 }
 
@@ -104,5 +119,5 @@ const actualizarPedido = async( req, res = response ) => {
 module.exports = {
     crearPedido,
     actualizarPedido,
-    getPedido
+    getPedidosUser
 }

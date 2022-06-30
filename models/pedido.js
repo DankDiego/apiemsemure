@@ -6,7 +6,7 @@ const PedidoSchema = Schema({
     },
     tracking: {
         type: String,
-        default: 'En Proceso',
+        default: 'Envio en Proceso',
     },
     productos:[],  
     estado: {
