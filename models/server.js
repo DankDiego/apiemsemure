@@ -17,6 +17,7 @@ class Server {
             productos:  '/api/productos',
             usuarios:   '/api/usuarios',
             uploads:    '/api/uploads',
+            stripemethod: '/api/checkout'
         }
 
 
@@ -62,6 +63,7 @@ class Server {
         this.app.use( this.paths.categorias, require('../routes/categorias'));
         this.app.use( this.paths.productos, require('../routes/productos'));
         this.app.use( this.paths.usuarios, require('../routes/usuarios'));
+        this.app.use( this.paths.stripemethod, require('../routes/pedido'));
         this.app.use( this.paths.uploads, require('../routes/uploads'));
         
     }

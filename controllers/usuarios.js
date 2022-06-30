@@ -92,6 +92,24 @@ const usuariosPutAddCart = async(req , res = response) => {
     
 }
 
+const usuariosPutRmvCart = async(req , res = response) => {
+
+    const { id } = req.params;
+    const {prodid} = req.body
+    console.log('usuariosPutRmvCart',prodid)
+    const removeditem = await Usuario.findByIdAndUpdate( 
+    id,
+    { $pull: { cartlist: prodid } },
+    { new: true }
+    )
+    res.json({
+        ok: true,
+        msg: 'Producto desagregado al carrito',
+        removeditem
+      })    
+    
+}
+
 
 
 module.exports = {
@@ -100,5 +118,6 @@ module.exports = {
     usuariosPut,
     usuariosPatch,
     usuariosDelete,
-    usuariosPutAddCart
+    usuariosPutAddCart,
+    usuariosPutRmvCart
 }
