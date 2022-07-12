@@ -21,6 +21,9 @@ const PedidoSchema = Schema({
     },
     direccion:{
         type: String
+    },
+    fecha:{
+        type: Date
     }
 });
 

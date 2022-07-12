@@ -23,12 +23,36 @@ const usuariosGet = async(req = request, res = response) => {
  
 }
 
+const usuariosGetMesActual = async(req = request, res = response) => {
+    const date = new Date();
+    const primerDia = new Date(date.getFullYear(), date.getMonth(), 1);
+    const ultimoDia = new Date(date.getFullYear(), date.getMonth() + 1, 1);
+    const query = { fecharegistro: {
+        $gte: primerDia, // dia inicio
+        $lt: ultimoDia // +1 dia
+      }}
+
+    const [ total, usuarios ] = await Promise.all([
+        Usuario.countDocuments(query),
+        Usuario.find(query)
+    ]);
+
+    res.json({
+        ok:true,
+        total,
+        usuarios
+    });
+ 
+}
+
+
+
 const usuariosPost = async(req, res = response) => {
     
-    const { nombre, correo, password, rol } = req.body;
+    const { nombre, correo, password, rol, direccion } = req.body;
     const fecharegistro = new Date();
     
-    const usuario = new Usuario({ nombre, correo, password, rol, fecharegistro });
+    const usuario = new Usuario({ nombre, correo, password, rol, fecharegistro, direccion });
 
     // Encriptar la contraseña
     const salt = bcryptjs.genSaltSync();
@@ -70,8 +94,11 @@ const usuariosDelete = async(req, res = response) => {
     const { id } = req.params;
     const usuario = await Usuario.findByIdAndUpdate( id, { estado: false } );
 
-    
-    res.json(usuario);
+    res.json({
+        ok: true,
+        msg: 'Usuario Desactivado',
+        usuario
+      })    
 }
 
 const usuariosPutAddCart = async(req , res = response) => {
@@ -119,5 +146,6 @@ module.exports = {
     usuariosPatch,
     usuariosDelete,
     usuariosPutAddCart,
-    usuariosPutRmvCart
+    usuariosPutRmvCart,
+    usuariosGetMesActual
 }

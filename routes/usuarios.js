@@ -18,12 +18,14 @@ const { usuariosGet,
         usuariosDelete,
         usuariosPatch,
         usuariosPutAddCart,
-        usuariosPutRmvCart } = require('../controllers/usuarios');
+        usuariosPutRmvCart,
+        usuariosGetMesActual } = require('../controllers/usuarios');
 
 const router = Router();
 
 
 router.get('/', usuariosGet );
+router.get('/mesactual', usuariosGetMesActual );
 
 router.put('/:id',[
     check('id', 'No es un ID válido').isMongoId(),
@@ -34,6 +36,7 @@ router.put('/:id',[
 
 router.post('/',[
     check('nombre', 'El nombre es obligatorio').not().isEmpty(),
+    check('direccion', 'La direccion es obligatoria').not().isEmpty(),
     check('password', 'El password debe de ser más de 6 letras').isLength({ min: 6 }),
     check('correo', 'El correo no es válido').isEmail(),
     check('correo').custom( emailExiste ),

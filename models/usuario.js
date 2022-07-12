@@ -41,7 +41,7 @@ const UsuarioSchema = Schema({
     },
     direccion:{
         type: String,
-        default: 'SECTOR 3 GRUPO 9 MZ B LOTE 16 VILLA EL SALVADOR'
+        required: [true, 'La direccion es obligatoria'],
     }
 });
 
