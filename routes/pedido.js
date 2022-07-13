@@ -4,7 +4,7 @@ const { check } = require('express-validator');
 const { validarJWT, validarCampos  } = require('../middlewares');
 
 
-const { crearPedido, getPedidosUser, getPedidosAll, getPedidosMesActual  } = require('../controllers/pedidos');
+const { crearPedido, getPedidosUser, getPedidosAll, getPedidosMesActual, getPedidoId, putPedidoId  } = require('../controllers/pedidos');
 
 const router = Router();
 
@@ -30,5 +30,12 @@ router.get('/:id',[
     
 ], getPedidosUser );
 
+router.get('/pedido/:id',[
+    
+], getPedidoId );
+
+router.put('/pedido/:id',[
+    
+], putPedidoId );
 
 module.exports = router;

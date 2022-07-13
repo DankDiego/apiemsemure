@@ -79,13 +79,13 @@ const getPedidosUser = async(req, res = response ) => {
             Pedido.find(query)
         ]);
     
-       
-    
         res.status(201).json({
             ok:true,
+            total,
             msg: 'Pedidos obtenidos',
             pedidos
         });
+        
     } catch (error) {
         res.status(201).json({
             ok:false,
@@ -97,6 +97,60 @@ const getPedidosUser = async(req, res = response ) => {
 
 }
 
+const getPedidoId = async(req, res = response ) => {
+    const { id } = req.params;
+    const query = { _id : id }
+    try {
+        const [ total, pedidos ] = await Promise.all([
+            Pedido.countDocuments(query),
+            Pedido.find(query)
+            .populate('usuario', 'nombre')
+        ]);
+    
+       
+    
+        res.status(201).json({
+            ok:true,
+            total,
+            msg: 'Pedido Obtenido',
+            pedidos
+        });
+    } catch (error) {
+        res.status(401).json({
+            ok:false,
+            msg: 'Intentalo mas tarde'
+        });
+    }
+
+    
+
+}
+
+const putPedidoId = async(req, res = response ) => {
+    const { id } = req.params;
+    const { estado } = req.body;
+    const data = {tracking:estado}
+    try {
+        const pedido = await Pedido.findByIdAndUpdate(id, data, { new: true });
+    
+        res.status(200).json( 
+            {ok:true,
+            msg: 'Estado del Pedido modificado',
+            pedido} 
+            );
+    } catch (error) {
+        return res.status(400).json({
+            ok: false,
+            msg: 'Intentalo mas tarde'
+        });
+    }
+
+    
+
+}
+
+
+
 const getPedidosAll = async(req, res = response ) => {
     const { id } = req.params;
     const query = { estado: true }
@@ -104,6 +158,7 @@ const getPedidosAll = async(req, res = response ) => {
         const [ total, pedidos ] = await Promise.all([
             Pedido.countDocuments(query),
             Pedido.find(query)
+            .populate('usuario', 'nombre')
         ]);
     
        
@@ -203,5 +258,7 @@ module.exports = {
     actualizarPedido,
     getPedidosUser,
     getPedidosAll,
-    getPedidosMesActual
+    getPedidosMesActual,
+    getPedidoId,
+    putPedidoId
 }
